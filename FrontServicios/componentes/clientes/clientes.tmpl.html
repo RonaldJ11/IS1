@@ -1,0 +1,177 @@
+<!-- <div class="menuPpal" ng-include='"templates/header.html"'></div>
+<div ng-include='"templates/menu.html"'></div> -->
+
+<header>
+    <!-- <div class="menuPpal" ng-include="templates/header.html"></div> -->
+    <!-- <div ng-include="templates/menu.html"></div> -->
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">About</h4>
+                    <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.
+                    </p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4 class="text-white">Contact</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Follow on Twitter</a></li>
+                        <li><a href="#" class="text-white">Like on Facebook</a></li>
+                        <li><a href="#" class="text-white">Email me</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>Reservas de limpieza</strong>
+            </a>
+            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"> -->
+            <!-- <span class="navbar-toggler-icon"></span> -->
+            <!-- </button> -->
+        </div>
+    </div>
+</header>
+
+
+<div class="row container">
+    <div class="col-md-6">
+        <section ng-controller="clientesController">
+            <section class="wrapper">
+                <!-- <div class="spinner center" ng-show="cargaPagina"><img src="images/ico_preload.gif"></div> -->
+                <div id="usuarios">
+                    <div class="encabezado">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1><i class="fa fa-users"></i> Clientes</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="cuerpo">
+                        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                        <section ng-show="!loading">
+                            <div class="table-responsive">
+                                <table class="table ">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th><span tooltip="Nombre de la entrada">Nombres completo</span></th>
+
+                                        <th>Ver Direcciones</th>
+
+                                    </thead>
+                                    <tr ng-repeat="entrada in info">
+                                        <td>{{entrada.id_cliente}}</td>
+                                        <td>{{entrada.nombres}}</td>
+                                        <td><button class="btn btn-warning" ng-click="listaServicio($index, content)"><i class="fa fa-search" aria-hidden="true"></i></button></td>
+                                        <!-- <td>{{entrada.descripcion}}</td> -->
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+
+
+        <section class="wrapper">
+            <div class="encabezado">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1><i class="fa fa-users"></i> Registro</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <Label><Strong>Agregar Clientes</Strong></Label>
+                    <form class="form-signin" ng-submit="registrar()">
+
+                        <label for="select"><Strong>Nombre</Strong></label>
+                        <div class="form-group has-feedback">
+                            <input ng-model="usuario.nombres" class="form-control" type="text" name="nombre" placeholder="Nombre" required autofocus />
+                            <i class="glyphicon glyphicon-user form-control-feedback"></i>
+                        </div>
+                        <!-- <div class="form-group has-feedback">
+                            <input ng-model="usuario.password" class="form-control" type="password" name="pass" placeholder="Contraseña" required />
+                            <i class="glyphicon glyphicon-asterisk form-control-feedback"></i>
+                        </div> -->
+
+                        <button class="btn btn-info mt-4 " type="submit">Registrar</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <Label><Strong>Agregar Direcciones</Strong></Label>
+                    <form class="form-signin" ng-submit="registrarDireccion()">
+
+                        <div class="form-group has-feedback">
+                            <label for="select"><Strong>Direccion</Strong></label>
+                            <input ng-model="direccion.direccion" class="form-control" type="text" name="nombre" placeholder="Direccion" required autofocus />
+                            <i class="glyphicon glyphicon-user form-control-feedback"></i>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="select"><Strong>Tipo de Direccion</Strong></label>
+                            <select ng-model="direccion.tipo_lugar" id="select" name="select" class="form-select form-select-sm" aria-label=".form-select-sm example" required>
+                                <option    selected value='Casas'>Casas</option>
+                                <option    selected value='Garages'>Garages</option>
+                                <option    selected value='Oficinas'>Oficinas</option>
+                                <option    selected value='Locales'>Locales Comerciales</option>
+                                <option    selected value='Restaurantes'>Restaurantes</option>
+                                <option    selected value='Centros'>Centros Comerciales</option>
+                                <option    selected value='otros'>otros</option>
+                            </select>
+                        </div>
+
+
+
+                        <div class="form-group has-feedback">
+                            <label for="select"> Usuario</label>
+                            <select ng-model="direccion.FK_cli_list" id="select" name="select" class="form-select form-select-sm" aria-label=".form-select-sm example" required>
+                                <option ng-repeat="entrada in info"   selected value={{entrada}}>{{entrada.id_cliente}}-{{entrada.nombres}}</option>
+                            </select>
+                        </div>
+
+                        <!-- <div class="form-group has-feedback">
+                            <input ng-model="usuario.password" class="form-control" type="password" name="pass" placeholder="Contraseña" required />
+                            <i class="glyphicon glyphicon-asterisk form-control-feedback"></i>
+                        </div> -->
+
+                        <button class="btn btn-info mt-4 " type="submit">Registrar</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <strong>Direcciones {{servicios[0]}}</strong>
+
+            <section ng-show="!loading">
+                <table class="table tables">
+                    <thead>
+                        <th>ID</th>
+                        <th><span tooltip="Nombre de la entrada">descripcion</span></th>
+                        <th>Tipo de agendamientos</th>
+                        <th>Suplementos</th>
+
+                    </thead>
+                    <tr ng-repeat="entrada in servicios">
+                        <td>{{entrada.id_servicio}}</td>
+                        <td>{{entrada.descripcion}}</td>
+                        <td>{{entrada.tipo_agendamiendo}}</td>
+                        <td>{{entrada.suplementos}}</td>
+
+                        <!-- <td>{{entrada.descripcion}}</td> -->
+                    </tr>
+                </table>
+            </section>
+        </section>
+    </div>
+</div>
